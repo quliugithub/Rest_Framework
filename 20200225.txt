@@ -1,0 +1,68 @@
+https://www.cnblogs.com/caochao-/articles/8808966.html
+
+
+1.内容详细:
+	1.版本
+		a.URL中通过GET传参
+		
+		b.在URL中传参(推荐使用)
+	2.解析器
+		前戏 django:request.Post/ request.body
+		1.如果请求头中的 content_type：application/x-www-form-urlencoded  request.Post中才有值(去request.body中解析数据)
+		2.数据格式要求:
+			name=alex&age=18&gender=男
+			
+		如:
+			a.form表单请求
+				<form method...>
+					input
+				</form>
+				
+			b.ajax提交
+				$.ajax({
+					url:...
+					type:POST
+					data:{name:alex,age=18}
+				})
+				
+			 情况一:
+				$.ajax({
+					url:...
+					type:POST
+					headers:{'content_type':'application/json'}
+					data:{name:alex,age=18} #内部转化  name=alex&age18&gender=男
+			})
+			 情况二:
+			 	$.ajax({
+					url:...
+					type:POST
+					headers:{'content_type':'application/json'}
+					data:JSON.stringfy{name:alex,age=18} #内部转化  #{name.alex,age:18...}
+					})
+				#body有值: POST无
+				
+				
+	rest_frameworl 解析器，对请求体数据进行解析
+	
+	总结:
+		使用:
+		在settting中添加
+		REST_FRAMEWORK = {
+		'DEFAULT_VERSIONING_CLASS':'rest_framework.versioning.URLPathVersioning',
+		"DEFAULT_VERSION":"V1",
+		"ALLOWED_VERSIONS":"V2",
+		"VERSION_PARAM":"version",
+		"DEFAULT_PARSER_CLASSES":["rest_framework.parsers.JSONParser","rest_framework.parsers.FormParser"],}
+		
+	源码流程:
+		请求头:
+		User-Agent 产生请求的浏览器类型
+		Accept 客户端可识别的内容类型列表
+		Host:请求的主机名,允许多个域名同处于一个IP地址,就是虚拟主机
+		
+		源码流程
+			dispatch request封装
+			request.data
+			
+
+			 
