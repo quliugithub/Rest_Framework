@@ -1,0 +1,34 @@
+https://www.cnblogs.com/ddzc/p/12145668.html
+序列化
+
+	部分总结
+		1 写类
+		 class UserInfoSerializers(serializers.Serializer):
+			username = serializers.CharField()
+			password = serializers.CharField()
+		class UserInfoSerializers(serializers.ModelSerializer):
+			UsType = serializers.CharField(source="get_user_type_display")
+			rls = serializers.SerializerMethodField()
+			
+			class Meta:
+				model = models.UserInfo
+				#fields = '__all__'
+				fields = ["id","username","password","UsType","rls","group"]
+		2.字段
+			a.UsType = serializers.CharField(source="get_user_type_display")
+			b.   rls = serializers.SerializerMethodField()
+
+			def get_rls(self,obj):
+				role_obj_list = obj.role.all()
+				ret = []
+				for item in role_obj_list:
+					ret.append({"id":item.id,"title":item.title})
+				return ret
+		3.自动化序列化联结表
+		    class Meta:
+				model = models.UserInfo
+				#ields = '__all__'
+				fields = ["id","username","password","group","role"]
+				depth = 1
+		4.生成链接
+				
