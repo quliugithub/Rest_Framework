@@ -1,0 +1,40 @@
+rest framework序列化数据验证
+https://www.cnblogs.com/kxsph/p/10615912.html
+
+
+序列化自定义规则
+class UserGroupSerializers(serializers.Serializer):
+    title = serializers.CharField(error_messages={"requied":"标题不能为空"},validators=[xxxvalidators('老男人'),])
+
+class UserGroupView(APIView):
+    def post(self, request, *args, **kwargs):
+        #print(request.data)
+        ser = UserGroupSerializers(data=request.data)
+        #print(ser)
+        if ser.is_valid():
+            print(ser.validated_data)
+        else:
+            print(ser.errors)
+
+        return HttpResponse("POST请求，响应内容")
+		
+		
+	问 自定义验证规则，需要钩子函数，请问钩子函数如何写
+	
+今日作业:
+	序列化自定义钩子函数
+	
+	
+今日内容概要:
+		1.分页
+		2.视图
+		3.路由
+		4.django组件：contenttype
+		5.渲染器
+
+
+内容会顾：
+	1.rest规范
+	http 域名规范 版本 资源 过滤条件 请求方法 状态码 hplink
+	
+	2.rest framework
